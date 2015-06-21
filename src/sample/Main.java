@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
+import java.math.BigInteger;
+
 public class Main extends Application {
 
     public TextField number;
@@ -28,7 +30,7 @@ public class Main extends Application {
 
     public void checkIt(ActionEvent actionEvent) {
         Controller cryptController = new Controller();
-        if(cryptController.fisherMiller(Long.parseLong(number.getText())))
+        if(cryptController.millerRabin(new BigInteger(number.getText())))
             result.setText("Simple");
         else
             result.setText("Complain");
@@ -41,7 +43,7 @@ public class Main extends Application {
         if(currNumber % 2 == 0)
             currNumber--;
         if(currNumber >= 3) {
-            while (!cryptController.fisherMiller(currNumber)) {
+            while (!cryptController.millerRabin(new BigInteger(""+currNumber))) {
                 currNumber -= 2;
             }
             result.setText("" + currNumber);
@@ -57,7 +59,7 @@ public class Main extends Application {
         currNumber += 2;
         if(currNumber % 2 == 0)
             currNumber++;
-        while (!cryptController.fisherMiller(currNumber)) {
+        while (!cryptController.millerRabin(new BigInteger(""+currNumber))) {
             currNumber += 2;
         }
         result.setText("" + currNumber);
