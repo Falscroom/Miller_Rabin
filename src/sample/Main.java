@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 
 import java.math.BigInteger;
 
@@ -18,7 +17,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Simplicity Test");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
@@ -28,40 +27,37 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void checkIt(ActionEvent actionEvent) {
+    public void checkIt() {
         Controller cryptController = new Controller();
-        if(cryptController.millerRabin(new BigInteger(number.getText())))
-            result.setText("Simple");
+        BigInteger n = new BigInteger(number.getText());
+        if (!cryptController.simpleTest(n))
+            if(cryptController.millerRabin(n))
+                result.setText("probably simple");
+            else
+                result.setText("Complain");
         else
             result.setText("Complain");
     }
 
-    public void findPrev(ActionEvent actionEvent) {
+    public void findPrev() {
         Controller cryptController = new Controller();
-        long currNumber = Long.parseLong(number.getText());
-        currNumber -= 2;
-        if(currNumber % 2 == 0)
-            currNumber--;
-        if(currNumber >= 3) {
-            while (!cryptController.millerRabin(new BigInteger(""+currNumber))) {
-                currNumber -= 2;
-            }
-            result.setText("" + currNumber);
+        BigInteger n = new BigInteger(number.getText()).subtract(new BigInteger("2"));
+        if (n.getLowestSetBit() != 0)
+            n = n.subtract(new BigInteger("1"));
+        while (!cryptController.millerRabin(n)) {
+            n = n.subtract(new BigInteger("2"));
         }
-        else {
-            result.setText("1");
-        }
+        result.setText(String.valueOf(n));
     }
 
-    public void findNext(ActionEvent actionEvent) {
+    public void findNext() {
         Controller cryptController = new Controller();
-        long currNumber = Long.parseLong(number.getText());
-        currNumber += 2;
-        if(currNumber % 2 == 0)
-            currNumber++;
-        while (!cryptController.millerRabin(new BigInteger(""+currNumber))) {
-            currNumber += 2;
+        BigInteger n = new BigInteger(number.getText()).add(new BigInteger("2"));
+        if (n.getLowestSetBit() != 0)
+            n = n.add(new BigInteger("1"));
+        while (!cryptController.millerRabin(n)) {
+            n = n.add(new BigInteger("2"));
         }
-        result.setText("" + currNumber);
+        result.setText(String.valueOf(n));
     }
 }

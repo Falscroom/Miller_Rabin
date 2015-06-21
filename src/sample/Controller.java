@@ -10,6 +10,13 @@ public class Controller {
     public int log2(BigInteger n) {
         return n.bitLength() - 1;
     }
+    public boolean simpleTest(BigInteger n) {
+        if(n.getLowestSetBit() == 0)
+            return false;
+        if(n.mod(new BigInteger("5")).equals(new BigInteger("0")) )
+            return false;
+        return n.mod(new BigInteger("7")).equals(new BigInteger("0"));
+    }
 
     public boolean millerRabin(BigInteger n) {
         long rounds = log2(n),s = 0;
@@ -17,7 +24,7 @@ public class Controller {
                 x,a;
         while(t.getLowestSetBit() != 0 && t.bitLength() > 4) {
             t = t.shiftRight(1);
-            s ++; // Я полагаю, что наши потребности не настолько высоки, что степень выйдет за класс long
+            s ++; // Я полагаю, что наши потребности не настолько высоки, что степень выйдет за long
         }
 
         long g = Long.parseLong(String.valueOf(n.shiftRight(n.bitLength() - 10)));
