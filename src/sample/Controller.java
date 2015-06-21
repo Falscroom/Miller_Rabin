@@ -1,10 +1,5 @@
 package sample;
-
-
-import javafx.event.ActionEvent;
-
 import java.math.BigInteger;
-import java.util.Locale;
 
 public class Controller {
     public int log2(BigInteger n) {
@@ -26,8 +21,6 @@ public class Controller {
             t = t.shiftRight(1);
             s ++; // Я полагаю, что наши потребности не настолько высоки, что степень выйдет за long
         }
-
-        long g = Long.parseLong(String.valueOf(n.shiftRight(n.bitLength() - 10)));
         for(int i = 0; i < rounds; i ++) {
 
             if(n.bitLength() > 10)
@@ -52,6 +45,4 @@ public class Controller {
         }
         return true; // вероятно простое
     }
-
-
 }
