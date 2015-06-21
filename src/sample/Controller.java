@@ -17,28 +17,29 @@ public class Controller {
                 x,a;
         while(t.getLowestSetBit() != 0 && t.bitLength() > 4) {
             t = t.shiftRight(1);
-            s ++;
+            s ++; // Я полагаю, что наши потребности не настолько высоки, что степень выйдет за класс long
         }
 
         long g = Long.parseLong(String.valueOf(n.shiftRight(n.bitLength() - 10)));
         for(int i = 0; i < rounds; i ++) {
+
             if(n.bitLength() > 10)
                 a = n.shiftRight(n.bitLength() - 10);
             else
-                a = n;
-            a = new BigInteger(String.valueOf(2 + (long) (Math.random() * Long.parseLong(String.valueOf(a))) )); // выбор случайного свидетеля простоты
+                a = n; // Это ужасно, но я МОГУ, а поэтому почему бы и нет!
+            a = new BigInteger(String.valueOf(2 + (long) (Math.random() * (Long.parseLong(String.valueOf(a)) - 2 ) ))); // выбор случайного свидетеля простоты
             x = a.modPow(t, n);
 
-            if(x.bitCount() == 1 || x.equals(n.clearBit(n.getLowestSetBit())))
+            if(x.bitCount() == 1 || x.equals(n.subtract(new BigInteger("1"))))
                 continue;
             for (int j = 0; j < s - 1; j++) {
                 x = x.modPow(new BigInteger("2"),n);
                 if(x.bitCount() == 1)
                     return false;
-                if (x.equals(n.clearBit(n.getLowestSetBit())))
+                if (x.equals(n.subtract(new BigInteger("1"))))
                     break;
             }
-            if (x.equals(n.clearBit(n.getLowestSetBit())))
+            if (x.equals(n.subtract(new BigInteger("1"))))
                 continue;
             return false;
         }
